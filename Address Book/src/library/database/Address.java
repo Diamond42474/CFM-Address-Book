@@ -1,0 +1,128 @@
+package library.database;
+
+import java.util.Date;
+
+/**
+ * 
+ * @author Logan Miller
+ *
+ */
+public class Address {
+	private String firstName;
+	private String lastName;
+
+	private String street;
+	private String city;
+	private String state;
+	private String zip;
+	private String dateCreated;
+
+	/**
+	 * Constructor to create the Address.
+	 * 
+	 * This is used as a template for inserting and finding documents from the
+	 * database
+	 * 
+	 * @param firstName Person's first name
+	 * @param lastName  Person's last name
+	 * @param street    Person's street address
+	 * @param city      Person's city
+	 * @param state     Person's state
+	 * @param zip       Person's zip code
+	 */
+	public Address(String firstName, String lastName, String street, String city, String state, String zip) {
+		this.firstName = firstName;
+		this.lastName = lastName;
+		this.street = street;
+		this.city = city;
+		this.state = state;
+		this.zip = zip;
+		this.dateCreated = new Date().toString();
+	}
+
+	/**
+	 * Used when retrieving a document from the database as the time created can now
+	 * be set instead of it being reset by the original constructor
+	 * 
+	 * @param firstName   Person's first name
+	 * @param lastName    Person's last name
+	 * @param street      Person's street address
+	 * @param city        Person's city
+	 * @param state       Person's state
+	 * @param zip         Person's zip code
+	 * @param dateCreated The timestamp that the document was originally created
+	 */
+	public Address(String firstName, String lastName, String street, String city, String state, String zip,
+			String dateCreated) {
+		this.firstName = firstName;
+		this.lastName = lastName;
+		this.street = street;
+		this.city = city;
+		this.state = state;
+		this.zip = zip;
+		this.dateCreated = dateCreated;
+	}
+
+	/**
+	 * Returns the Person's first name
+	 * 
+	 * @return First Name
+	 */
+	public String getFirstName() {
+		return firstName;
+	}
+
+	/**
+	 * Returns the Person's last name
+	 * 
+	 * @return Last name
+	 */
+	public String getLastName() {
+		return lastName;
+	}
+
+	/**
+	 * Returns the Person's street address
+	 * 
+	 * @return Street Address
+	 */
+	public String getStreet() {
+		return street;
+	}
+
+	/**
+	 * Returns the Person's city
+	 * 
+	 * @return City
+	 */
+	public String getCity() {
+		return city;
+	}
+
+	/**
+	 * Returns the Person's state
+	 * 
+	 * @return State
+	 */
+	public String getState() {
+		return state;
+	}
+
+	/**
+	 * Returns the Person's zip code
+	 * 
+	 * @return Zip code
+	 */
+	public String getZip() {
+		return zip;
+	}
+
+	/**
+	 * Returns the timestamp that the document was created
+	 * 
+	 * @return timestamp of when the document was created
+	 */
+	public String getDateCreated() {
+		return dateCreated;
+	}
+}
