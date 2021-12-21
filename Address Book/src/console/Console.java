@@ -13,7 +13,8 @@ public class Console {
 	 * @param args N/A
 	 */
 	public static void main(String[] args) {
-		// TODO Auto-generated method stub
+		Dialogue dialogue = new Dialogue();
+		dialogue.start();
 
 	}
 

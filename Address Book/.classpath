@@ -7,5 +7,9 @@
 		</attributes>
 	</classpathentry>
 	<classpathentry kind="lib" path="Libraries/mongo-java-driver-3.12.10.jar"/>
+	<classpathentry kind="lib" path="Libraries/guava-31.0.1-jre.jar"/>
+	<classpathentry kind="lib" path="Libraries/jackson-annotations-2.10.3.jar"/>
+	<classpathentry kind="lib" path="Libraries/jackson-core-2.10.3.jar"/>
+	<classpathentry kind="lib" path="Libraries/jackson-databind-2.10.3.jar"/>
 	<classpathentry kind="output" path="bin"/>
 </classpath>

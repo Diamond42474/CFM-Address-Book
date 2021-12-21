@@ -5,6 +5,8 @@ import java.util.List;
 import java.util.logging.Level;
 import org.bson.Document;
 
+import library.storage.StorageManager;
+
 /**
  * 
  * @author Logan Miller
@@ -31,7 +33,7 @@ public class DatabaseManager {
 	 */
 	public static void main(String[] args) {
 		try {
-			start("");
+			start();
 		} catch (Exception e) {
 			System.out.println("There was an error, bro");
 			return;
@@ -54,12 +56,23 @@ public class DatabaseManager {
 	 * @throws Exception Thrown if there is an error when connecting to the
 	 *                   database. Make sure that the connection string is right.
 	 */
-	public static void start(String connectionString) throws Exception {
+	public static void start() throws Exception {
+		String connectionString = StorageManager.getConnectionString();
 		try {
 			database = new Database(debuggerLevel);
 			database.connect(connectionString);
 		} catch (Exception e) {
 			throw new Exception(e);
+		}
+	}
+
+	public static boolean checkConnection(String connectionString) {
+		Database db = new Database(debuggerLevel);
+		try {
+			db.connect(connectionString);
+			return true;
+		} catch (Exception e) {
+			return false;
 		}
 	}
 
