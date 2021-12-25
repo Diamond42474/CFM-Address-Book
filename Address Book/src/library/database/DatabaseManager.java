@@ -25,34 +25,11 @@ public class DatabaseManager {
 	private final static String DATABASENAME = "CFM-Test";
 	// Specific Collection info
 	private final static String ADDRESSCOLLECTION = "Addresses";
-
-	/**
-	 * Only used for testing and will be removed later
-	 * 
-	 * @param args N/A
-	 */
-	public static void main(String[] args) {
-		try {
-			start();
-		} catch (Exception e) {
-			System.out.println("There was an error, bro");
-			return;
-		}
-		Address address = new Address("James", "Bond", "2014 W Malabu Point", "Malabu", "Alaska", "1212");
-		AddressQuery.Insert.addAddress(address);
-
-		for (Address address1 : AddressQuery.Find.byFirstName("James")) {
-			System.out.println(address1.getCity());
-		}
-		AddressQuery.Update.firstName("James", "Jack");
-		// AddressQuery.Delete.byFirstName("James");
-	}
+	private final static String USERSCOLLECTION = "Users";
 
 	/**
 	 * Creates a connection to a specified database (local or remote)
 	 * 
-	 * @param connectionString Connection String to any remote database. Leave this
-	 *                         blank if you want to connect to localhost
 	 * @throws Exception Thrown if there is an error when connecting to the
 	 *                   database. Make sure that the connection string is right.
 	 */
@@ -66,6 +43,12 @@ public class DatabaseManager {
 		}
 	}
 
+	/**
+	 * Checks to see if the application can connect to the given database
+	 * 
+	 * @param connectionString Database connection string
+	 * @return If the application can connect to the database
+	 */
 	public static boolean checkConnection(String connectionString) {
 		Database db = new Database(debuggerLevel);
 		try {
@@ -94,102 +77,78 @@ public class DatabaseManager {
 	}
 
 	/**
+	 * Finds a list of users given a query
 	 * 
-	 * @author Logan Miller
-	 * 
-	 *         Used for all queries dealing with addresses
-	 *
+	 * @param query Parameters for user search
+	 * @return List of users
 	 */
-	public static class AddressQuery {
-		/**
-		 * 
-		 * @author Logan Miller
-		 * 
-		 *         Used for all queries dealing with searching
-		 *
-		 */
-		public static class Find {
-			/**
-			 * Finds documents based off of the first name and turns them into Addresses
-			 * 
-			 * @param firstName First Name of person
-			 * @return List of Addresses matching the query
-			 */
-			public static List<Address> byFirstName(String firstName) {
-				Document query = new Document().append("firstName", firstName);
-				List<Document> out = database.getDocument(DATABASENAME, ADDRESSCOLLECTION, query);
-				List<Address> addresses = new ArrayList<Address>();
-				for (Document doc : out) {
-					addresses.add(new Address(doc.getString("firstName"), doc.getString("lastName"),
-							doc.getString("street"), doc.getString("city"), doc.getString("state"),
-							doc.getString("zip"), doc.getString("dateCreated")));
-				}
-				return addresses;
-			}
+	public static List<User> findUser(Document query) {
+		List<Document> out = database.getDocument(DATABASENAME, USERSCOLLECTION, query);
+		List<User> users = new ArrayList<User>();
+		for (Document doc : out) {
+			users.add(new User(doc.getString("username"), doc.getString("firstName"), doc.getString("lastName"),
+					doc.getString("email"), doc.getString("hashedPassword")));
 		}
+		return users;
+	}
 
-		/**
-		 * 
-		 * @author Logan Miller
-		 * 
-		 *         Used for all queries dealing with adding documents
-		 *
-		 */
-		public static class Insert {
-			/**
-			 * Adds an address to the collection
-			 * 
-			 * @param address Address being added
-			 */
-			public static void addAddress(Address address) {
-				Document in = new Document().append("firstName", address.getFirstName())
-						.append("lastName", address.getLastName()).append("street", address.getStreet())
-						.append("city", address.getCity()).append("state", address.getState())
-						.append("zip", address.getZip()).append("dateCreated", address.getDateCreated());
-				database.insertDocument(DATABASENAME, ADDRESSCOLLECTION, in);
-			}
-		}
+	/**
+	 * Adds a user to the database
+	 * 
+	 * @param user User being added to the database
+	 */
+	public static void addUser(User user) {
+		Document in = new Document().append("username", user.getUsername()).append("firstName", user.getFirstName())
+				.append("lastName", user.getLastName()).append("email", user.getEmail())
+				.append("hashedPassword", user.getHashedPassword());
+		database.insertDocument(DATABASENAME, USERSCOLLECTION, in);
+	}
 
-		/**
-		 * 
-		 * @author Logan Miller
-		 * 
-		 *         Used for all queries dealing with deleting documents
-		 *
-		 */
-		public static class Delete {
-			/**
-			 * Deletes document based off of the firstName variable
-			 * 
-			 * Can delete multiple documents of the first name is not unique
-			 * 
-			 * @param firstName Person's first name
-			 */
-			public static void byFirstName(String firstName) {
-				Document query = new Document().append("firstName", firstName);
-				database.deleteDocument(DATABASENAME, ADDRESSCOLLECTION, query);
-			}
+	/**
+	 * Finds a list of addresses given a query
+	 * 
+	 * @param query Parameters for address search
+	 * @return List of addresses
+	 */
+	public static List<Address> findAddress(Document query) {
+		List<Document> out = database.getDocument(DATABASENAME, ADDRESSCOLLECTION, query);
+		List<Address> addresses = new ArrayList<Address>();
+		for (Document doc : out) {
+			addresses.add(new Address(doc.getString("firstName"), doc.getString("lastName"), doc.getString("street"),
+					doc.getString("city"), doc.getString("state"), doc.getString("zip"), doc.getString("dateCreated")));
 		}
+		return addresses;
+	}
 
-		/**
-		 * 
-		 * @author Logan Miller
-		 * 
-		 *         Used for all queries dealing with updating documents
-		 *
-		 */
-		public static class Update {
-			/**
-			 * Updates a documents first name based off of it's first name
-			 * 
-			 * @param firstName    Person's current first name
-			 * @param newFirstName new first name
-			 */
-			public static void firstName(String firstName, String newFirstName) {
-				Document query = new Document().append("firstName", firstName);
-				Document update = new Document().append("firstName", newFirstName);
-				database.updateDocument(DATABASENAME, ADDRESSCOLLECTION, query, update);
-			}
-		}
+	/**
+	 * Adds an address to the database
+	 * 
+	 * @param address Address being added to the database
+	 */
+	public static void insertAddress(Address address) {
+		Document in = new Document().append("firstName", address.getFirstName())
+				.append("lastName", address.getLastName()).append("street", address.getStreet())
+				.append("city", address.getCity()).append("state", address.getState()).append("zip", address.getZip())
+				.append("dateCreated", address.getDateCreated()).append("username", address.getUsername());
+		database.insertDocument(DATABASENAME, ADDRESSCOLLECTION, in);
+	}
+
+	/**
+	 * Deletes an address
+	 * 
+	 * @param query Filter to define what addresses will be deleted
+	 */
+	public static void deleteAddress(Document query) {
+		database.deleteDocument(DATABASENAME, ADDRESSCOLLECTION, query);
+	}
+
+	/**
+	 * Updates an address
+	 * 
+	 * @param query  Filter to define what address will be updated
+	 * @param update Fields being updated and their values
+	 */
+	public static void updateAddress(Document query, Document update) {
+		database.updateDocument(DATABASENAME, ADDRESSCOLLECTION, query, update);
 	}
 }

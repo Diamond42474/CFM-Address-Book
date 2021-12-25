@@ -11,15 +11,25 @@ import com.fasterxml.jackson.databind.JsonMappingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 
 class FileService {
-
-	public static void makeFolder(String dir) {
+	/**
+	 * Creates folder
+	 * 
+	 * @param dir path to folder
+	 */
+	static void makeFolder(String dir) {
 		File file = new File(dir);
 		if (!file.exists()) {
 			file.mkdirs();
 		}
 	}
 
-	public static boolean fileExists(String dir) {
+	/**
+	 * Returns if a file exists
+	 * 
+	 * @param dir path to file
+	 * @return if the file exists
+	 */
+	static boolean fileExists(String dir) {
 		return new File(dir).exists();
 	}
 

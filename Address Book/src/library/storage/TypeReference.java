@@ -4,11 +4,11 @@ import java.lang.reflect.ParameterizedType;
 import java.lang.reflect.Type;
 
 /**
- * Used as a way to pass a type that has it's own genarics such as a
- * HashMap<K,V>. Thanks to Baeldung tutorials for helping me figure this out and
- * providing a fix to my problem
- * 
  * @author Logan Miller
+ * 
+ *         Used as a way to pass a type that has it's own genarics such as a
+ *         HashMap<K,V>. Thanks to Baeldung tutorials for helping me figure this
+ *         out and providing a fix to my problem
  *
  * @param <T> Type to later get passed to a method
  */

@@ -19,7 +19,7 @@ import com.mongodb.client.MongoDatabase;
  *         Each connection is a unique instance that can interact with the
  *         database depending on the privileges of the user's connection string
  */
-public class Database {
+class Database {
 	private MongoClient mongoClient;
 	private Logger mongoLogger;
 
